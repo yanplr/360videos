@@ -22,13 +22,29 @@ jobs:
 
       - name: Install rclone
         run: curl https://rclone.org/install.sh | sudo bash
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      
+      - name: Install requirements
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
       - name: Unzip config
         run: |
           mkdir -p ~/.config/rclone/
-          unzip -P ${{ secrets.PASSWD }} rclone.zip -d ~/.config/rclone
+          unzip -P ${{ secrets.ZIP_PASSWD }} rclone.zip -d ~/.config/rclone
       
-      - name: Test rclone
+      - name: Download videos
+        run: |
+          sudo cp -p ./chromedriver /usr/bin
+          chmod -R 777 /usr/bin/chromedriver
+          python ./360_chromedriver.py
+
+      - name: Sync rclone
         run: |
 
           # 更改时区
