@@ -54,11 +54,12 @@ def login(driver):
 ## 重新加载一遍，以获得cookie里的值
 def getcookies():
     ### /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir='/Users/yanplr/Library/Application\ Support/Google/Chrome'
+    os.system('/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir='/Users/yanplr/Library/Application\ Support/Google/Chrome'')
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     ## 部署到github action时删除debugger_address
-#     options.debugger_address = '127.0.0.1:9222'
+    options.debugger_address = '127.0.0.1:9222'
     d = DesiredCapabilities.CHROME
     d['goog:loggingPrefs'] = {'performance':'ALL'}
     s = Service(CHROMEDRIVER_PATH)
