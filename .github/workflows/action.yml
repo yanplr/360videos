@@ -57,5 +57,5 @@ jobs:
         run: |
           ls -a
           # 列出文件(此处不展示)
-          rclone mkdir onedrive:/360videos
-          rclone rsync ./ onedrive:/360videos
+          # rclone mkdir onedrive:/360videos
+          rclone copy ./ onedrive:/360videos
