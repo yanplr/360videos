@@ -36,7 +36,7 @@ jobs:
       - name: Unzip config
         run: |
           mkdir -p ~/.config/rclone/
-          unzip -P ${{ secrets.ZIP_PASSWD }} rclone.zip -d ~/.config/rclone
+          unzip -P ${{ secrets.PASSWD }} rclone.zip -d ~/.config/rclone
       
       - name: Download videos
         run: |
