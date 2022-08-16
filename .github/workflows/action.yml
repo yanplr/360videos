@@ -38,6 +38,11 @@ jobs:
           mkdir -p ~/.config/rclone/
           unzip -P ${{ secrets.PASSWD }} rclone.zip -d ~/.config/rclone
       
+      - name: Change localtime
+        run: |
+          # 更改时区
+          sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+      
       - name: Download videos
         run: |
           sudo cp -p ./chromedriver /usr/bin
@@ -50,10 +55,7 @@ jobs:
 
       - name: Sync rclone
         run: |
-
-          # 更改时区
-          sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
           ls -a
           # 列出文件(此处不展示)
           rclone mkdir onedrive:/360videos
-          rclone sync ./ onedrive:/360videos
+          rclone rsync ./ onedrive:/360videos
