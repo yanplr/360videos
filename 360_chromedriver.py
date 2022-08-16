@@ -192,12 +192,12 @@ def downloadVideos(videoDict, saveDir, cookies_Q, cookies_T, cookies_sid):
 
 if __name__ == '__main__':
     ## 获取cookies
-    cookies_Q, cookies_T, cookies_sid = getcookies()
+#     cookies_Q, cookies_T, cookies_sid = getcookies()
 
     ## 临时设置cookies
-    # cookies_Q = 'u%3Dyvat888funa%26n%3D%26le%3D%26m%3DZGHjWGWOWGWOWGWOWGWOWGWOAwZl%26qid%3D229226876%26im%3D1_t0105d6cf9b508f72c8%26src%3Dpcw_ipcam_live%26t%3D1'
-    # cookies_T = 's%3D07cadea6e33643d33758ff889dc3e925%26t%3D1660654682%26lm%3D%26lf%3D2%26sk%3D1991100f99cc88b484a637e7bea43b17%26mt%3D1660654682%26rc%3D%26v%3D2.0%26a%3D0'
-    # cookies_sid = '7de55fb60d0c690b380e4b3c5b7194673ohhcTF%2B1PxFZu%2FOn2%2BpE%2BMf0ODCxUfnyLIQRYJRji0%3D'
+    cookies_Q = 'u%3Dyvat888funa%26n%3D%26le%3D%26m%3DZGHjWGWOWGWOWGWOWGWOWGWOAwZl%26qid%3D229226876%26im%3D1_t0105d6cf9b508f72c8%26src%3Dpcw_ipcam_live%26t%3D1'
+    cookies_T = 's%3Dcc6f74495cb4897c555b98a4200a486c%26t%3D1660659928%26lm%3D%26lf%3D2%26sk%3D6f3854937956fe8d4691d41c4716ab03%26mt%3D1660659928%26rc%3D%26v%3D2.0%26a%3D0'
+    cookies_sid = '7de55fb60d0c690b380e4b3c5b719467E40W8Iz%2BCs10aPFbt1HvUieTynC%2B996GDypGrOhK9JU%3D'
     
     ## 下载视频
     getVideoDict(cookies_Q, cookies_T, cookies_sid)
