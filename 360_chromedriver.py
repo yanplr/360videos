@@ -13,7 +13,7 @@ import json
 import os
 
 CHROMEDRIVER_PATH = '/usr/bin/chromedriver'
-SERVER = 'on'
+SERVER = ''
 PHONE = os.environ['PHONE']
 PW = os.environ['PW']
 SCKEY = os.environ['SCKEY']
@@ -78,8 +78,8 @@ def getcookies():
     print('正则匹配获取cookies和sid')
     pattern = re.compile('^.*Q=(.*?); __NS_.*T=(.*?);.*jia_web_sid=(.*?%3D).*$')
     for entry in driver.get_log('performance'):
-        # print(entry)
-        # print('------------------------')
+        print(entry)
+        print('------------------------')
         try:
             m = pattern.match(entry['message'])
             cookies_Q = m.group(1)
