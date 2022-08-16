@@ -61,7 +61,7 @@ def getcookies():
 #     options.add_experimental_option("detach", True)
     options.set_capability("detach", True)
     ## 部署到github action时删除debugger_address
-    options.debugger_address = '127.0.0.1:9222'
+#     options.debugger_address = '127.0.0.1:9222'
     d = DesiredCapabilities.CHROME
     d['goog:loggingPrefs'] = {'performance':'ALL'}
     s = Service(CHROMEDRIVER_PATH)
