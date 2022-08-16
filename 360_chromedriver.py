@@ -74,7 +74,7 @@ def getcookies():
 
     ## 重新get到登录页面，以获取cookies
     print('重新登录，以获取cookies')
-    listUrl = 'https://my.jia.360.cn/web/myList
+    listUrl = 'https://my.jia.360.cn/web/myList'
     driver.get(listUrl)
     time.sleep(1)
 
