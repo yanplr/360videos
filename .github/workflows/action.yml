@@ -46,7 +46,7 @@ jobs:
       - name: Download videos
         run: |
           sudo cp -p ./chromedriver /usr/local/bin
-          chmod -R 755 /usr/local/bin/chromedriver
+          sudo chmod 777 /usr/local/bin/chromedriver
           python ./360_chromedriver.py
         env:
           PHONE: ${{ secrets.PHONE }}
