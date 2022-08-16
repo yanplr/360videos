@@ -12,7 +12,7 @@ import requests
 import json
 import os
 
-CHROMEDRIVER_PATH = '/usr/bin/chromedriver'
+CHROMEDRIVER_PATH = '/usr/local/bin/chromedriver'
 SERVER = 'on'
 PHONE = os.environ['PHONE']
 PW = os.environ['PW']
