@@ -43,6 +43,10 @@ jobs:
           sudo cp -p ./chromedriver /usr/bin
           chmod -R 777 /usr/bin/chromedriver
           python ./360_chromedriver.py
+        env:
+          PHONE: ${{ secrets.PHONE }}
+          PW: ${{ secrets.PW }}
+          SCKEY: ${{ secrets.SCKEY }}
 
       - name: Sync rclone
         run: |
