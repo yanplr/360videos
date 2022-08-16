@@ -18,6 +18,7 @@ PHONE = os.environ['PHONE']
 PW = os.environ['PW']
 SCKEY = os.environ['SCKEY']
 
+
 dkStart = datetime.datetime.now()
 
 def sendMsg(m, error=''):
@@ -93,17 +94,7 @@ def getcookies():
         except:
             pass
 
-def downloadVideo(cookies_Q, cookies_T, cookies_sid):
-    videoHeaders = {
-        'Host':	'q3.jia.360.cn',
-        'Accept':'image/*;q=0.8',
-        
-        'User-Agent':'360HomeGuard_NoPods/7.7.6 (iPad; iOS 15.6; Scale/2.00)',
-        'Accept-Language':'zh-CN,zh-Hans;q=0.9',
-        'Accept-Encoding':'gzip, deflate, br',
-        'Connection':'keep-alive',
-    }
-
+def getVideoDict(cookies_Q, cookies_T, cookies_sid):
     imageHeaders = {
         'Host':'q3.jia.360.cn',
         'Accept':'*/*',
@@ -119,7 +110,6 @@ def downloadVideo(cookies_Q, cookies_T, cookies_sid):
     }
 
     imageHeaders['Cookie'] = 'q=' + cookies_Q + ';' + 't=' + cookies_T + ';qid=229226876;sid=' + cookies_sid
-    videoHeaders['Cookie'] = 'q=' + cookies_Q + ';' + 't=' + cookies_T + ';qid=229226876;sid=' + cookies_sid
 
     # 构造data， taskid去掉， date去掉
     # 获取前几天的，就是page的值改为1，2，3……
@@ -146,6 +136,7 @@ def downloadVideo(cookies_Q, cookies_T, cookies_sid):
         os.makedirs(saveDir)
 
     print(f'总共{pagesNum}个page')
+    videoDict = dict()
     for page in range(0, pagesNum + 1):
     # for page in range(0, 1):  
         payload = imageData[:122] + str(page) + imageData[123:]
@@ -157,32 +148,56 @@ def downloadVideo(cookies_Q, cookies_T, cookies_sid):
         for i in range(0, jsLen):
         # for i in range(0, 1):
             videoUrl = js[i]['videoUrl']
-            print(f'第{page*20 + i + 1}个/共{imageNum}个，videoUrl = {videoUrl}')
+            # print(f'第{page*20 + i + 1}个/共{imageNum}个，videoUrl = {videoUrl}')
+
             # eventTime 为时间戳
             eventTime = js[i]['eventTime']
             # videoTime 为时间戳转化过来的标准时间，准备作为mp4的文件名
             videoTime = millisecond_to_time(eventTime).replace('-', '').replace(' ', '_').replace(':', '_')
-            print(videoTime)
+            
+            print(f'第{page*20 + i + 1}个/共{imageNum}个, {videoTime}')
+            
+            videoDict[videoTime] = videoUrl
 
+    downloadVideos(videoDict, saveDir, cookies_Q, cookies_T, cookies_sid)
+    msg = '成功同步' + str(imageNum) + '条360视频'
+    sendMsg(msg)
+
+def downloadVideos(videoDict, saveDir, cookies_Q, cookies_T, cookies_sid):
+    videoHeaders = {
+        'Host':	'q3.jia.360.cn',
+        'Accept':'image/*;q=0.8',
+        
+        'User-Agent':'360HomeGuard_NoPods/7.7.6 (iPad; iOS 15.6; Scale/2.00)',
+        'Accept-Language':'zh-CN,zh-Hans;q=0.9',
+        'Accept-Encoding':'gzip, deflate, br',
+        'Connection':'keep-alive',
+    }
+    videoHeaders['Cookie'] = 'q=' + cookies_Q + ';' + 't=' + cookies_T + ';qid=229226876;sid=' + cookies_sid
+
+    for key, value in videoDict.items():
+        try:
+            videoTime = key
+            videoUrl = value
             # requests到video的二进制数据
             videoContent = requests.get(url=videoUrl, headers=videoHeaders, verify=False).content
-                    
+
             ## 保存为
             mp4Name = saveDir + '/' + videoTime + '.mp4'
             with open(mp4Name, 'wb') as f:
                 f.write(videoContent)
                 f.close()
-    msg = '成功同步' + str(imageNum) + '条360视频'
-    sendMsg(msg)
- 
-
+        except:
+            pass
 
 if __name__ == '__main__':
     ## 获取cookies
-#     cookies_Q, cookies_T, cookies_sid = getcookies()
-    cookies_Q = 'u%3Dyvat888funa%26n%3D%26le%3D%26m%3DZGHjWGWOWGWOWGWOWGWOWGWOAwZl%26qid%3D229226876%26im%3D1_t0105d6cf9b508f72c8%26src%3Dpcw_ipcam_live%26t%3D1'
-    cookies_T = 's%3D07cadea6e33643d33758ff889dc3e925%26t%3D1660654682%26lm%3D%26lf%3D2%26sk%3D1991100f99cc88b484a637e7bea43b17%26mt%3D1660654682%26rc%3D%26v%3D2.0%26a%3D0'
-    cookies_sid = '7de55fb60d0c690b380e4b3c5b7194673ohhcTF%2B1PxFZu%2FOn2%2BpE%2BMf0ODCxUfnyLIQRYJRji0%3D'
+    cookies_Q, cookies_T, cookies_sid = getcookies()
+
+    ## 临时设置cookies
+    # cookies_Q = 'u%3Dyvat888funa%26n%3D%26le%3D%26m%3DZGHjWGWOWGWOWGWOWGWOWGWOAwZl%26qid%3D229226876%26im%3D1_t0105d6cf9b508f72c8%26src%3Dpcw_ipcam_live%26t%3D1'
+    # cookies_T = 's%3D07cadea6e33643d33758ff889dc3e925%26t%3D1660654682%26lm%3D%26lf%3D2%26sk%3D1991100f99cc88b484a637e7bea43b17%26mt%3D1660654682%26rc%3D%26v%3D2.0%26a%3D0'
+    # cookies_sid = '7de55fb60d0c690b380e4b3c5b7194673ohhcTF%2B1PxFZu%2FOn2%2BpE%2BMf0ODCxUfnyLIQRYJRji0%3D'
     
     ## 下载视频
-    downloadVideo(cookies_Q, cookies_T, cookies_sid)
+    getVideoDict(cookies_Q, cookies_T, cookies_sid)
