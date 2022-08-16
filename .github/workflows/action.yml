@@ -47,6 +47,7 @@ jobs:
         run: |
           sudo cp -p ./chromedriver /usr/local/bin
           sudo chmod 777 /usr/local/bin/chromedriver
+          python ./startChrome.py
           python ./360_chromedriver.py
         env:
           PHONE: ${{ secrets.PHONE }}
