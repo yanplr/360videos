@@ -58,7 +58,7 @@ def getcookies():
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     ## 部署到github action时删除debugger_address
-    options.debugger_address = '127.0.0.1:9222'
+#     options.debugger_address = '127.0.0.1:9222'
     d = DesiredCapabilities.CHROME
     d['goog:loggingPrefs'] = {'performance':'ALL'}
     s = Service(CHROMEDRIVER_PATH)
@@ -200,4 +200,4 @@ if __name__ == '__main__':
 #     cookies_sid = '7de55fb60d0c690b380e4b3c5b719467E40W8Iz%2BCs10aPFbt1HvUieTynC%2B996GDypGrOhK9JU%3D'
     
     ## 下载视频
-    # getVideoDict(cookies_Q, cookies_T, cookies_sid)
+    getVideoDict(cookies_Q, cookies_T, cookies_sid)
