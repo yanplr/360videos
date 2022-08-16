@@ -1,0 +1,39 @@
+name: 360videos to onedrive
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    #       分 时 日 月 周
+    - cron: 0 15 * * *
+  watch:
+    types: started
+
+jobs:
+  run-it:
+    runs-on: ubuntu-latest
+    
+    name: 360videos
+    
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v2
+
+      - name: Install rclone
+        run: curl https://rclone.org/install.sh | sudo bash
+        
+      - name: Unzip config
+        run: |
+          mkdir -p ~/.config/rclone/
+          unzip -P ${{ secrets.PASSWD }} rclone.zip -d ~/.config/rclone
+      
+      - name: Test rclone
+        run: |
+
+          # 更改时区
+          sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+          ls -a
+          # 列出文件(此处不展示)
+          rclone mkdir onedrive:/360videos
+          rclone sync ./ onedrive:/360videos
