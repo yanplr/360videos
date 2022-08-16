@@ -18,12 +18,12 @@ PHONE = os.environ['PHONE']
 PW = os.environ['PW']
 SCKEY = os.environ['SCKEY']
 
-dkStart = datetime.now()
+dkStart = datetime.datetime.now()
 
 def sendMsg(m, error=''):
     if SERVER == 'on':
         timeNow = time.strftime('%Y-%m-%d', time.localtime())
-        duration = datetime.now() - dkStart
+        duration = datetime.datetime.now() - dkStart
         if error == '':
             msg = '{} {}! 耗时{}秒。'.format(timeNow, m, duration.seconds)
         else:
