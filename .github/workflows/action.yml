@@ -47,7 +47,7 @@ jobs:
         run: |
           sudo cp -p ./chromedriver /usr/local/bin
           sudo chmod 777 /usr/local/bin/chromedriver
-          python ./360_chromedriver.py
+          python ./_testNetwork.py
         env:
           PHONE: ${{ secrets.PHONE }}
           PW: ${{ secrets.PW }}
