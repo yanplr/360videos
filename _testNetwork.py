@@ -67,6 +67,8 @@ def info(url):
     print(f'登录成功!')
 
     time.sleep(5)
+    listUrl = 'https://my.jia.360.cn/web/myList'
+    driver.get(listUrl)
     requests = []
     response = []
     for log in driver.get_log('performance'):
