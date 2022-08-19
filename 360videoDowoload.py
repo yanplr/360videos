@@ -13,6 +13,7 @@ import os
 from PIL import Image
 from paddleocr import PaddleOCR
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
+import threading
 
 ## 变量
 CHROMEDRIVER_PATH = '/usr/local/bin/chromedriver'
@@ -21,6 +22,27 @@ PHONE = os.environ['PHONE']
 PW = os.environ['PW']
 SCKEY = os.environ['SCKEY']
 dkStart = datetime.datetime.now()
+
+def shot(driver, img_dir):
+    i = 0
+    while True:
+        img_file = os.path.join(img_dir, f'{i}.png')
+        try:
+            driver.save_screenshot(img_file)
+        except:
+            return
+        i += 1
+
+def getGif(img_dir):
+    img_list = os.listdir(img_dir)  # 列出目录所有图片
+    img_list.sort(key=lambda x: int(x[:-4]))  # 排序
+
+    first_img = Image.open(os.path.join(img_dir, img_list[0]))  # 第一张图片对象
+    else_imgs = [Image.open(os.path.join(img_dir, img)) for img in img_list[1:]]  # 剩余图片对象
+
+    first_img.save("./png/record.gif", append_images=else_imgs,
+                duration=300,
+                save_all=True) # 拼接保存
 
 def captcha(driver, ocr, name):
     screenshot = './screenshot_' + name
@@ -67,6 +89,11 @@ def millisecond_to_time(millis):
 
 ## 重新加载一遍，以获得cookie里的值
 def getcookies():
+    ## img_dir
+    img_dir = './png'
+    if not os.path.exists(img_dir):
+        os.makedirs(img_dir)
+
     ### /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir='/Users/yanplr/Library/Application\ Support/Google/Chrome'
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
@@ -80,6 +107,9 @@ def getcookies():
     s = Service(CHROMEDRIVER_PATH)
     driver = webdriver.Chrome(service=s, options=options, desired_capabilities=d)
     driver.delete_all_cookies()
+
+    # t = threading.Thread(target=shot, args=(driver, img_dir))  # 新建线程
+    # t.start()
 
     loginUrl = 'https://my.jia.360.cn/web/index'
     driver.get(loginUrl)
@@ -98,7 +128,7 @@ def getcookies():
     tryTime = 0
     ocr = PaddleOCR(use_angle_cls=True, lang="en") 
     # ocr = ''
-    while(flag and tryTime < 30):
+    while(flag and tryTime < 10):
         try:
             user_name = driver.find_elements(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
             print(f'用户名：{user_name.text}')
