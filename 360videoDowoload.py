@@ -11,7 +11,7 @@ import requests
 import json
 import os
 from PIL import Image
-from paddleocr import PaddleOCR
+# from paddleocr import PaddleOCR
 
 
 CHROMEDRIVER_PATH = '/usr/local/bin/chromedriver'
@@ -35,17 +35,17 @@ def captcha(driver, ocr):
     time.sleep(1)
 
     ## 进行ocr
-    res = 'null'
-    result = ocr.ocr('./captcha.png', cls=True)
-    for line in result:
-        res = line[1][0].lower()
-        print(f'验证码可能是 {res}')
+    # res = 'null'
+    # result = ocr.ocr('./captcha.png', cls=True)
+    # for line in result:
+    #     res = line[1][0].lower()
+    #     print(f'验证码可能是 {res}')
     
     ## 输入captcha
-    driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[3]/span/input').send_keys(res)
-    time.sleep(1)
-    driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input').click()
-    time.sleep(3)
+    # driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[3]/span/input').send_keys(res)
+    # time.sleep(1)
+    # driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input').click()
+    # time.sleep(3)
 
 def sendMsg(m, error=''):
     if SERVER == 'on':
@@ -94,7 +94,8 @@ def getcookies():
 
     flag = True
     tryTime = 0
-    ocr = PaddleOCR(use_angle_cls=True, lang="en") 
+    # ocr = PaddleOCR(use_angle_cls=True, lang="en") 
+    ocr = ''
     while(flag and tryTime < 3):
         try:
             user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
@@ -226,7 +227,8 @@ def downloadVideos(videoDict, saveDir, cookies_Q, cookies_T, cookies_sid):
 
 if __name__ == '__main__':
     ## 获取cookies
-    cookies_Q, cookies_T, cookies_sid = getcookies()
+    # cookies_Q, cookies_T, cookies_sid = getcookies()
+    getcookies()
     
     ## 下载视频
     # getVideoDict(cookies_Q, cookies_T, cookies_sid)
