@@ -95,7 +95,7 @@ def getcookies():
     flag = True
     tryTime = 0
     ocr = PaddleOCR(use_angle_cls=True, lang="en") 
-    while(flag and tryTime < 30):
+    while(flag and tryTime < 3):
         try:
             user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
             print(f'用户名：{user_name.text}')
@@ -106,26 +106,26 @@ def getcookies():
             print(f'尝试输入验证码：第{str(tryTime)}次')
             captcha(driver, ocr)
 
-    ## 重新get
-    driver.get(loginUrl)
-    indexCookieList = driver.get_cookies()
-    print(type(indexCookieList[0]))
-    print(indexCookieList)
+    # ## 重新get
+    # driver.get(loginUrl)
+    # indexCookieList = driver.get_cookies()
+    # print(type(indexCookieList[0]))
+    # print(indexCookieList)
 
-    for cookie in indexCookieList:
-        # print(cookie)
-        # for key, value in cookie.items():
-        if cookie['name'] == 'jia_web_sid':
-            cookies_sid = cookie['value']
-        if cookie['name'] == 'Q':
-            cookies_Q = cookie['value']
-        if cookie['name'] == 'T':
-            cookies_T= cookie['value']
+    # for cookie in indexCookieList:
+    #     # print(cookie)
+    #     # for key, value in cookie.items():
+    #     if cookie['name'] == 'jia_web_sid':
+    #         cookies_sid = cookie['value']
+    #     if cookie['name'] == 'Q':
+    #         cookies_Q = cookie['value']
+    #     if cookie['name'] == 'T':
+    #         cookies_T= cookie['value']
     
-    print(f'cookies_Q = {cookies_Q}')
-    print(f'cookies_T = {cookies_T}')
-    print(f'cookies_sid = {cookies_sid}')
-    return cookies_Q, cookies_T, cookies_sid
+    # print(f'cookies_Q = {cookies_Q}')
+    # print(f'cookies_T = {cookies_T}')
+    # print(f'cookies_sid = {cookies_sid}')
+    # return cookies_Q, cookies_T, cookies_sid
    
 
 def getVideoDict(cookies_Q, cookies_T, cookies_sid):
@@ -229,4 +229,4 @@ if __name__ == '__main__':
     cookies_Q, cookies_T, cookies_sid = getcookies()
     
     ## 下载视频
-    getVideoDict(cookies_Q, cookies_T, cookies_sid)
+    # getVideoDict(cookies_Q, cookies_T, cookies_sid)
