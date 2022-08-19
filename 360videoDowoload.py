@@ -179,7 +179,7 @@ def getcookies():
 
     flag = True
     tryTime = 0
-    ocr = PaddleOCR(use_angle_cls=True, lang="en") 
+    # ocr = PaddleOCR(use_angle_cls=True, lang="en") 
     # ocr = ''
     while(flag and tryTime < 10):
         try:
