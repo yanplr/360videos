@@ -156,9 +156,9 @@ def getcookies():
         if cookie['name'] == 'T':
             cookies_T= cookie['value']
     
-    print(f'cookies_Q = {cookies_Q}')
-    print(f'cookies_T = {cookies_T}')
-    print(f'cookies_sid = {cookies_sid}')
+    # print(f'cookies_Q = {cookies_Q}')
+    # print(f'cookies_T = {cookies_T}')
+    # print(f'cookies_sid = {cookies_sid}')
     return cookies_Q, cookies_T, cookies_sid
    
 
