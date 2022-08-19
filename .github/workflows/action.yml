@@ -27,6 +27,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
+
+      - name: Install paddleocr
+        run: |
+          python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+          pip install "paddleocr>=2.0.1"
       
       - name: Install requirements
         run: |
@@ -47,7 +52,7 @@ jobs:
         run: |
           sudo cp -p ./chromedriver /usr/local/bin
           sudo chmod 777 /usr/local/bin/chromedriver
-          python ./_testNetwork.py
+          python ./360videoDowoload.py
         env:
           PHONE: ${{ secrets.PHONE }}
           PW: ${{ secrets.PW }}
