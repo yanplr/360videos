@@ -1,8 +1,5 @@
-from lib2to3.refactor import get_all_fix_names
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.service import Service
 import time
@@ -11,9 +8,7 @@ import requests
 import json
 import os
 from PIL import Image
-# from paddleocr import PaddleOCR
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
-import threading
+from paddleocr import PaddleOCR
 import base64
 
 ## 变量
@@ -23,7 +18,6 @@ PHONE = os.environ['PHONE']
 PW = os.environ['PW']
 SCKEY = os.environ['SCKEY']
 dkStart = datetime.datetime.now()
-
 
 def save_fullscreenshot(driver,screen_shot_name):
     # We need the dimensions of the content
@@ -48,25 +42,20 @@ def save_fullscreenshot(driver,screen_shot_name):
 
 def captcha(driver, ocr, name):
     screenshot = './captcha/screenshot_' + name
-    # driver.save_screenshot(screenshot)
     save_fullscreenshot(driver,screenshot)
     img = Image.open(screenshot)
     img = img.convert("RGB")
     cropped = img.crop((900-1, 500+2, 1000+1, 550-6)) ## full_screen
-
-
     cropped.save('./captcha/captcha_' + name)
-    time.sleep(1)
 
     # 进行ocr
     res = 'null'
-    # result = ocr.ocr('./captcha/captcha_' + name, cls=True)
-    # for line in result:
-    #     res = line[1][0].lower()
-    #     print(f'验证码可能是 {res}')
-    
-    # if res == '':
-    #     res = 'null'
+    result = ocr.ocr('./captcha/captcha_' + name, cls=True)
+    for line in result:
+        res = line[1][0].lower()
+        print(f'验证码可能是 {res}')
+    if res == '':
+        res = 'null'
     
     # 输入captcha
     print(f'尝试输入验证码{res}')
@@ -114,9 +103,6 @@ def getcookies():
     driver = webdriver.Chrome(service=s, options=options, desired_capabilities=d)
     driver.delete_all_cookies()
 
-    # t = threading.Thread(target=shot, args=(driver, img_dir))  # 新建线程
-    # t.start()
-
     loginUrl = 'https://my.jia.360.cn/web/index'
     driver.get(loginUrl)
 
@@ -132,8 +118,8 @@ def getcookies():
 
     flag = True
     tryTime = 0
-    # ocr = PaddleOCR(use_angle_cls=True, lang="en") 
-    ocr = ''
+    ocr = PaddleOCR(use_angle_cls=True, lang="en") 
+    # ocr = ''
     while(flag and tryTime < 5):
         try:
             driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input')
@@ -159,21 +145,21 @@ def getcookies():
         #     captcha(driver, ocr, name)
 
     ## 重新get
-    # driver.get(loginUrl)
-    # indexCookieList = driver.get_cookies()
+    driver.get(loginUrl)
+    indexCookieList = driver.get_cookies()
 
-    # for cookie in indexCookieList:
-    #     if cookie['name'] == 'jia_web_sid':
-    #         cookies_sid = cookie['value']
-    #     if cookie['name'] == 'Q':
-    #         cookies_Q = cookie['value']
-    #     if cookie['name'] == 'T':
-    #         cookies_T= cookie['value']
+    for cookie in indexCookieList:
+        if cookie['name'] == 'jia_web_sid':
+            cookies_sid = cookie['value']
+        if cookie['name'] == 'Q':
+            cookies_Q = cookie['value']
+        if cookie['name'] == 'T':
+            cookies_T= cookie['value']
     
-    # print(f'cookies_Q = {cookies_Q}')
-    # print(f'cookies_T = {cookies_T}')
-    # print(f'cookies_sid = {cookies_sid}')
-    # return cookies_Q, cookies_T, cookies_sid
+    print(f'cookies_Q = {cookies_Q}')
+    print(f'cookies_T = {cookies_T}')
+    print(f'cookies_sid = {cookies_sid}')
+    return cookies_Q, cookies_T, cookies_sid
    
 
 def getVideoDict(cookies_Q, cookies_T, cookies_sid):
@@ -272,8 +258,8 @@ def downloadVideos(videoDict, saveDir, cookies_Q, cookies_T, cookies_sid):
 
 if __name__ == '__main__':
     ## 获取cookies
-    # cookies_Q, cookies_T, cookies_sid = getcookies()
-    getcookies()
+    cookies_Q, cookies_T, cookies_sid = getcookies()
+    # getcookies()
     
     ## 下载视频
-    # getVideoDict(cookies_Q, cookies_T, cookies_sid)
+    getVideoDict(cookies_Q, cookies_T, cookies_sid)
