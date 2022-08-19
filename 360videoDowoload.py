@@ -132,7 +132,7 @@ def getcookies():
     tryTime = 0
     ocr = PaddleOCR(use_angle_cls=True, lang="en") 
     # ocr = ''
-    while(flag and tryTime < 3):
+    while(flag and tryTime < 10):
         try:
             user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
             print(f'用户名：{user_name.text}')
@@ -146,9 +146,6 @@ def getcookies():
 
     ## 重新get
     # driver.get(loginUrl)
-    # indexCookieList = driver.get_cookies()
-    # print(type(indexCookieList[0]))
-    # print(indexCookieList)
 
     # for cookie in indexCookieList:
     #     if cookie['name'] == 'jia_web_sid':
