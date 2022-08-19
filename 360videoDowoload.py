@@ -180,7 +180,7 @@ def getcookies():
     flag = True
     tryTime = 0
     # ocr = PaddleOCR(use_angle_cls=True, lang="en") 
-    # ocr = ''
+    ocr = ''
     while(flag and tryTime < 10):
         try:
             driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input')
