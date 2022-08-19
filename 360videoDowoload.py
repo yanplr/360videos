@@ -14,6 +14,7 @@ from PIL import Image
 # from paddleocr import PaddleOCR
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import threading
+import base64
 
 ## 变量
 CHROMEDRIVER_PATH = '/usr/local/bin/chromedriver'
@@ -24,81 +25,33 @@ SCKEY = os.environ['SCKEY']
 dkStart = datetime.datetime.now()
 
 
-## 用driver.screen_shot截图位置会有略微区别
-def screenshot_to_png(driver, filename):
-    ''' 参数：网址
-        功能: 保存网址截图
-             解决了截图不全问题
-             解决了懒加载问题
-             保存俩种图片格式
-    '''
-    # path = './png'
-    try:
-        driver.implicitly_wait(20)
- 
-        # 模拟人滚动滚动条,处理图片懒加载问题
-        js_height = "return document.body.clientHeight"
-        k = 1
-        height = driver.execute_script(js_height)
-        while True:
-            if k * 500 < height:
-                js_move = "window.scrollTo(0,{})".format(k * 500)
-                print(js_move)
-                driver.execute_script(js_move)
-                time.sleep(0.2)
-                height = driver.execute_script(js_height)
-                k += 1
-            else:
-                break
- 
-        time.sleep(1)
- 
-        # 7>  # 直接截图截不全，调取最大网页截图
-        width = driver.execute_script(
-            "return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);")
-        height = driver.execute_script(
-            "return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);")
-        print(width, height)
-        # 将浏览器的宽高设置成刚刚获取的宽高
-        driver.set_window_size(width + 100, height + 100)
-        time.sleep(1)
-        # png_path = path + '/{}.png'.format(filename)
- 
-        # 截图并关掉浏览器
-        driver.save_screenshot(filename)
-        # driver.close()
- 
-    except Exception as e:
-        print(e)
+def save_fullscreenshot(driver,screen_shot_name):
+    # We need the dimensions of the content
+    page_rect = driver.execute_cdp_cmd('Page.getLayoutMetrics', {})
 
+    # parameters needed for ful page screenshot
+    # note we are setting the width and height of the viewport to screenshot, same as the site's content size
+    screenshot_config = {'captureBeyondViewport': True,
+                         'fromSurface': True,
+                         'clip': {'width': page_rect['contentSize']['width'],
+                                  'height': page_rect['contentSize']['height'],
+                                  'x': 0,
+                                  'y': 0,
+                                  'scale': 1},
+                         }
+    # Dictionary with 1 key: data
+    base_64_png = driver.execute_cdp_cmd('Page.captureScreenshot', screenshot_config)
 
-def shot(driver, img_dir):
-    i = 0
-    while True:
-        img_file = os.path.join(img_dir, f'{i}.png')
-        try:
-            driver.save_screenshot(img_file)
-        except:
-            return
-        i += 1
-
-def getGif(img_dir):
-    img_list = os.listdir(img_dir)  # 列出目录所有图片
-    img_list.sort(key=lambda x: int(x[:-4]))  # 排序
-
-    first_img = Image.open(os.path.join(img_dir, img_list[0]))  # 第一张图片对象
-    else_imgs = [Image.open(os.path.join(img_dir, img)) for img in img_list[1:]]  # 剩余图片对象
-
-    first_img.save("./png/record.gif", append_images=else_imgs,
-                duration=300,
-                save_all=True) # 拼接保存
+    # Write img to file
+    with open(screen_shot_name, "wb") as fh:
+        fh.write(base64.urlsafe_b64decode(base_64_png['data']))
 
 def captcha(driver, ocr, name):
     screenshot = './captcha/screenshot_' + name
-    # driver.save_screenshot(screenshot)、
-    screenshot_to_png(driver, screenshot)
-    # img = Image.open(screenshot)
-    # img = img.convert("RGB")
+    # driver.save_screenshot(screenshot)
+    save_fullscreenshot(driver,screenshot)
+    img = Image.open(screenshot)
+    img = img.convert("RGB")
     # # cropped = img.crop((1190, 1010, 1400, 1080)) ## mac的参数
     # # cropped = img.crop((899, 503, 1004, 543)) ## 1633 * 6xx
     # cropped = img.crop((580, 502, 683, 544)) ## 800 * 600
