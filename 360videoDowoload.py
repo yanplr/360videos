@@ -92,7 +92,7 @@ def getcookies():
     tryTime = 0
     ocr = PaddleOCR(use_angle_cls=True, lang="en") 
     # ocr = ''
-    while(flag and tryTime < 50):
+    while(flag and tryTime < 30):
         try:
             user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
             print(f'用户名：{user_name.text}')
