@@ -39,11 +39,15 @@ def captcha(driver, ocr, name):
         res = line[1][0].lower()
         print(f'验证码可能是 {res}')
     
+    if res == '':
+        res = 'null'
+    
     # 输入captcha
+    print(f'尝试输入验证码{res}')
     driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[3]/span/input').send_keys(res)
     time.sleep(1)
     driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input').click()
-    time.sleep(3)
+    time.sleep(5)
 
 def sendMsg(m, error=''):
     if SERVER == 'on':
