@@ -182,31 +182,42 @@ def getcookies():
     ocr = PaddleOCR(use_angle_cls=True, lang="en") 
     # ocr = ''
     while(flag and tryTime < 10):
-        try:
-            user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
-            print(f'用户名：{user_name.text}')
-            print(f'登录成功')
-            flag = False
-        except NoSuchElementException:
+        if driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input'):
             tryTime += 1
             print(f'尝试输入验证码：第{str(tryTime)}次')
             name = str(tryTime) + '.png'
             captcha(driver, ocr, name)
+        else:
+            user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
+            print(f'用户名：{user_name.text}')
+            print(f'登录成功')
+            flag = False
+
+        # try:
+        #     user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
+        #     print(f'用户名：{user_name.text}')
+        #     print(f'登录成功')
+        #     flag = False
+        # except NoSuchElementException:
+        #     tryTime += 1
+        #     print(f'尝试输入验证码：第{str(tryTime)}次')
+        #     name = str(tryTime) + '.png'
+        #     captcha(driver, ocr, name)
 
     ## 重新get
-    # driver.get(loginUrl)
+    driver.get(loginUrl)
 
-    # for cookie in indexCookieList:
-    #     if cookie['name'] == 'jia_web_sid':
-    #         cookies_sid = cookie['value']
-    #     if cookie['name'] == 'Q':
-    #         cookies_Q = cookie['value']
-    #     if cookie['name'] == 'T':
-    #         cookies_T= cookie['value']
+    for cookie in indexCookieList:
+        if cookie['name'] == 'jia_web_sid':
+            cookies_sid = cookie['value']
+        if cookie['name'] == 'Q':
+            cookies_Q = cookie['value']
+        if cookie['name'] == 'T':
+            cookies_T= cookie['value']
     
-    # print(f'cookies_Q = {cookies_Q}')
-    # print(f'cookies_T = {cookies_T}')
-    # print(f'cookies_sid = {cookies_sid}')
+    print(f'cookies_Q = {cookies_Q}')
+    print(f'cookies_T = {cookies_T}')
+    print(f'cookies_sid = {cookies_sid}')
     # return cookies_Q, cookies_T, cookies_sid
    
 
