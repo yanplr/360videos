@@ -23,6 +23,7 @@ PW = os.environ['PW']
 SCKEY = os.environ['SCKEY']
 dkStart = datetime.datetime.now()
 
+
 def shot(driver, img_dir):
     i = 0
     while True:
@@ -45,19 +46,19 @@ def getGif(img_dir):
                 save_all=True) # 拼接保存
 
 def captcha(driver, ocr, name):
-    screenshot = './screenshot_' + name
+    screenshot = './captcha/screenshot_' + name
     driver.save_screenshot(screenshot)
     img = Image.open(screenshot)
     img = img.convert("RGB")
     # cropped = img.crop((1190, 1010, 1400, 1080)) ## mac的参数
     # cropped = img.crop((899, 503, 1004, 543)) ## 1633 * 6xx
     cropped = img.crop((580, 502, 683, 544)) ## 800 * 600
-    cropped.save('./captcha_' + name)
+    cropped.save('./captcha/captcha_' + name)
     time.sleep(1)
 
     # 进行ocr
     res = 'null'
-    result = ocr.ocr('./captcha_' + name, cls=True)
+    result = ocr.ocr('./captcha/captcha_' + name, cls=True)
     for line in result:
         res = line[1][0].lower()
         print(f'验证码可能是 {res}')
@@ -93,13 +94,16 @@ def getcookies():
     img_dir = './png'
     if not os.path.exists(img_dir):
         os.makedirs(img_dir)
+    cap_dir = './captcha'
+    if not os.path.exists(cap_dir):
+        os.makedirs(cap_dir)
 
     ### /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir='/Users/yanplr/Library/Application\ Support/Google/Chrome'
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
 #     options.add_experimental_option("detach", True)
-    options.set_capability("detach", True)
+    # options.set_capability("detach", True)
     ## 部署到github action时删除debugger_address
 #     options.debugger_address = '127.0.0.1:9222'
     d = DesiredCapabilities.CHROME
@@ -130,7 +134,7 @@ def getcookies():
     # ocr = ''
     while(flag and tryTime < 10):
         try:
-            user_name = driver.find_elements(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
+            user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
             print(f'用户名：{user_name.text}')
             print(f'登录成功')
             flag = False
