@@ -1,3 +1,4 @@
+from lib2to3.refactor import get_all_fix_names
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,15 +21,15 @@ PW = os.environ['PW']
 SCKEY = os.environ['SCKEY']
 dkStart = datetime.datetime.now()
 
-def captcha(driver, ocr):
-    screenshot = './screenshot.png'
+def captcha(driver, ocr, name):
+    screenshot = './screenshot_' + name
     driver.save_screenshot(screenshot)
     img = Image.open(screenshot)
     img = img.convert("RGB")
     # cropped = img.crop((1190, 1010, 1400, 1080)) ## mac的参数
     # cropped = img.crop((899, 503, 1004, 543)) ## 1633 * 6xx
     cropped = img.crop((580, 502, 683, 544)) ## 800 * 600
-    cropped.save('./captcha.png')
+    cropped.save('./captcha' + name)
     time.sleep(1)
 
     # 进行ocr
@@ -92,7 +93,7 @@ def getcookies():
     tryTime = 0
     ocr = PaddleOCR(use_angle_cls=True, lang="en") 
     # ocr = ''
-    while(flag and tryTime < 30):
+    while(flag and tryTime < 100):
         try:
             user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
             print(f'用户名：{user_name.text}')
@@ -101,26 +102,27 @@ def getcookies():
         except:
             tryTime += 1
             print(f'尝试输入验证码：第{str(tryTime)}次')
-            captcha(driver, ocr)
+            name = str(tryTime) + '.png'
+            captcha(driver, ocr, name)
 
-    ## 重新get
-    driver.get(loginUrl)
-    indexCookieList = driver.get_cookies()
-    print(type(indexCookieList[0]))
-    print(indexCookieList)
+    # ## 重新get
+    # driver.get(loginUrl)
+    # indexCookieList = driver.get_cookies()
+    # print(type(indexCookieList[0]))
+    # print(indexCookieList)
 
-    for cookie in indexCookieList:
-        if cookie['name'] == 'jia_web_sid':
-            cookies_sid = cookie['value']
-        if cookie['name'] == 'Q':
-            cookies_Q = cookie['value']
-        if cookie['name'] == 'T':
-            cookies_T= cookie['value']
+    # for cookie in indexCookieList:
+    #     if cookie['name'] == 'jia_web_sid':
+    #         cookies_sid = cookie['value']
+    #     if cookie['name'] == 'Q':
+    #         cookies_Q = cookie['value']
+    #     if cookie['name'] == 'T':
+    #         cookies_T= cookie['value']
     
-    print(f'cookies_Q = {cookies_Q}')
-    print(f'cookies_T = {cookies_T}')
-    print(f'cookies_sid = {cookies_sid}')
-    return cookies_Q, cookies_T, cookies_sid
+    # print(f'cookies_Q = {cookies_Q}')
+    # print(f'cookies_T = {cookies_T}')
+    # print(f'cookies_sid = {cookies_sid}')
+    # return cookies_Q, cookies_T, cookies_sid
    
 
 def getVideoDict(cookies_Q, cookies_T, cookies_sid):
@@ -219,7 +221,8 @@ def downloadVideos(videoDict, saveDir, cookies_Q, cookies_T, cookies_sid):
 
 if __name__ == '__main__':
     ## 获取cookies
-    cookies_Q, cookies_T, cookies_sid = getcookies()
+    # cookies_Q, cookies_T, cookies_sid = getcookies()
+    getcookies()
     
     ## 下载视频
-    getVideoDict(cookies_Q, cookies_T, cookies_sid)
+    # getVideoDict(cookies_Q, cookies_T, cookies_sid)

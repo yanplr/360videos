@@ -20,9 +20,6 @@ jobs:
       - name: Checkout codes
         uses: actions/checkout@v2
 
-      - name: Install rclone
-        run: curl https://rclone.org/install.sh | sudo bash
-
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
@@ -57,6 +54,10 @@ jobs:
           PHONE: ${{ secrets.PHONE }}
           PW: ${{ secrets.PW }}
           SCKEY: ${{ secrets.SCKEY }}
+
+      - name: Install rclone
+        run: curl https://rclone.org/install.sh | sudo bash
+
 
       - name: Sync rclone
         run: |
