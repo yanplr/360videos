@@ -58,22 +58,22 @@ def captcha(driver, ocr, name):
     cropped.save('./captcha/captcha_' + name)
     time.sleep(1)
 
-    # # 进行ocr
-    # res = 'null'
-    # result = ocr.ocr('./captcha/captcha_' + name, cls=True)
-    # for line in result:
-    #     res = line[1][0].lower()
-    #     print(f'验证码可能是 {res}')
+    # 进行ocr
+    res = 'null'
+    result = ocr.ocr('./captcha/captcha_' + name, cls=True)
+    for line in result:
+        res = line[1][0].lower()
+        print(f'验证码可能是 {res}')
     
-    # if res == '':
-    #     res = 'null'
+    if res == '':
+        res = 'null'
     
-    # # 输入captcha
-    # print(f'尝试输入验证码{res}')
-    # driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[3]/span/input').send_keys(res)
-    # time.sleep(1)
-    # driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input').click()
-    # time.sleep(5)
+    # 输入captcha
+    print(f'尝试输入验证码{res}')
+    driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[3]/span/input').send_keys(res)
+    time.sleep(1)
+    driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input').click()
+    time.sleep(5)
 
 def sendMsg(m, error=''):
     if SERVER == 'on':
@@ -134,7 +134,7 @@ def getcookies():
     tryTime = 0
     # ocr = PaddleOCR(use_angle_cls=True, lang="en") 
     ocr = ''
-    while(flag and tryTime < 10):
+    while(flag and tryTime < 5):
         try:
             driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input')
             tryTime += 1
