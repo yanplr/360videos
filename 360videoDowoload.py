@@ -6,21 +6,18 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.service import Service
 import time
 import datetime
-import re
 import requests
 import json
 import os
 from PIL import Image
-# from paddleocr import PaddleOCR
+from paddleocr import PaddleOCR
 
-
+## 变量
 CHROMEDRIVER_PATH = '/usr/local/bin/chromedriver'
 SERVER = 'on'
 PHONE = os.environ['PHONE']
 PW = os.environ['PW']
 SCKEY = os.environ['SCKEY']
-
-
 dkStart = datetime.datetime.now()
 
 def captcha(driver, ocr):
@@ -29,23 +26,23 @@ def captcha(driver, ocr):
     img = Image.open(screenshot)
     img = img.convert("RGB")
     # cropped = img.crop((1190, 1010, 1400, 1080)) ## mac的参数
-    cropped = img.crop((899, 503, 1004, 543))
-
+    # cropped = img.crop((899, 503, 1004, 543)) ## 1633 * 6xx
+    cropped = img.crop((580, 502, 683, 544)) ## 800 * 600
     cropped.save('./captcha.png')
     time.sleep(1)
 
-    ## 进行ocr
-    # res = 'null'
-    # result = ocr.ocr('./captcha.png', cls=True)
-    # for line in result:
-    #     res = line[1][0].lower()
-    #     print(f'验证码可能是 {res}')
+    # 进行ocr
+    res = 'null'
+    result = ocr.ocr('./captcha.png', cls=True)
+    for line in result:
+        res = line[1][0].lower()
+        print(f'验证码可能是 {res}')
     
-    ## 输入captcha
-    # driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[3]/span/input').send_keys(res)
-    # time.sleep(1)
-    # driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input').click()
-    # time.sleep(3)
+    # 输入captcha
+    driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[3]/span/input').send_keys(res)
+    time.sleep(1)
+    driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input').click()
+    time.sleep(3)
 
 def sendMsg(m, error=''):
     if SERVER == 'on':
@@ -56,7 +53,7 @@ def sendMsg(m, error=''):
         else:
             msg = '{} {}!'.format(timeNow, error)
         url = 'https://sctapi.ftqq.com/{}.send?title={}&desp={}'.format(SCKEY, msg, '{}\n{}'.format(msg, error))
-        re.get(url)
+        requests.get(url)
 
 def millisecond_to_time(millis):
     """13位时间戳转换为日期格式字符串"""
@@ -65,7 +62,6 @@ def millisecond_to_time(millis):
 ## 重新加载一遍，以获得cookie里的值
 def getcookies():
     ### /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir='/Users/yanplr/Library/Application\ Support/Google/Chrome'
-#     os.system('/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222')
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
@@ -94,8 +90,8 @@ def getcookies():
 
     flag = True
     tryTime = 0
-    # ocr = PaddleOCR(use_angle_cls=True, lang="en") 
-    ocr = ''
+    ocr = PaddleOCR(use_angle_cls=True, lang="en") 
+    # ocr = ''
     while(flag and tryTime < 3):
         try:
             user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
@@ -107,26 +103,24 @@ def getcookies():
             print(f'尝试输入验证码：第{str(tryTime)}次')
             captcha(driver, ocr)
 
-    # ## 重新get
-    # driver.get(loginUrl)
-    # indexCookieList = driver.get_cookies()
-    # print(type(indexCookieList[0]))
-    # print(indexCookieList)
+    ## 重新get
+    driver.get(loginUrl)
+    indexCookieList = driver.get_cookies()
+    print(type(indexCookieList[0]))
+    print(indexCookieList)
 
-    # for cookie in indexCookieList:
-    #     # print(cookie)
-    #     # for key, value in cookie.items():
-    #     if cookie['name'] == 'jia_web_sid':
-    #         cookies_sid = cookie['value']
-    #     if cookie['name'] == 'Q':
-    #         cookies_Q = cookie['value']
-    #     if cookie['name'] == 'T':
-    #         cookies_T= cookie['value']
+    for cookie in indexCookieList:
+        if cookie['name'] == 'jia_web_sid':
+            cookies_sid = cookie['value']
+        if cookie['name'] == 'Q':
+            cookies_Q = cookie['value']
+        if cookie['name'] == 'T':
+            cookies_T= cookie['value']
     
-    # print(f'cookies_Q = {cookies_Q}')
-    # print(f'cookies_T = {cookies_T}')
-    # print(f'cookies_sid = {cookies_sid}')
-    # return cookies_Q, cookies_T, cookies_sid
+    print(f'cookies_Q = {cookies_Q}')
+    print(f'cookies_T = {cookies_T}')
+    print(f'cookies_sid = {cookies_sid}')
+    return cookies_Q, cookies_T, cookies_sid
    
 
 def getVideoDict(cookies_Q, cookies_T, cookies_sid):
@@ -152,8 +146,6 @@ def getVideoDict(cookies_Q, cookies_T, cookies_sid):
         "parad":"{\"needTotal\":1,\"taskid\":\"\",\"imgType\":3,\"withCry\":0,\"date\":\"\",\"sn\":\"3601Q0700002176\",\"page\":0}","ver":"7.7.6","from":"mpc_ipcam_ios"
     }
     imageData = json.dumps(imageData)
-
-    # print(imageHeaders)
 
     ## 进行requests
     imageUrl = 'https://q3.jia.360.cn/image/getImagesBySn?lang=zh-Hans'
@@ -227,8 +219,7 @@ def downloadVideos(videoDict, saveDir, cookies_Q, cookies_T, cookies_sid):
 
 if __name__ == '__main__':
     ## 获取cookies
-    # cookies_Q, cookies_T, cookies_sid = getcookies()
-    getcookies()
+    cookies_Q, cookies_T, cookies_sid = getcookies()
     
     ## 下载视频
-    # getVideoDict(cookies_Q, cookies_T, cookies_sid)
+    getVideoDict(cookies_Q, cookies_T, cookies_sid)
