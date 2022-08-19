@@ -29,12 +29,12 @@ def captcha(driver, ocr, name):
     # cropped = img.crop((1190, 1010, 1400, 1080)) ## mac的参数
     # cropped = img.crop((899, 503, 1004, 543)) ## 1633 * 6xx
     cropped = img.crop((580, 502, 683, 544)) ## 800 * 600
-    cropped.save('./captcha' + name)
+    cropped.save('./captcha_' + name)
     time.sleep(1)
 
     # 进行ocr
     res = 'null'
-    result = ocr.ocr('./captcha.png', cls=True)
+    result = ocr.ocr('./captcha_' + name, cls=True)
     for line in result:
         res = line[1][0].lower()
         print(f'验证码可能是 {res}')
