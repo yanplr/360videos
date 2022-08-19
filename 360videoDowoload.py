@@ -11,7 +11,7 @@ import requests
 import json
 import os
 from PIL import Image
-from paddleocr import PaddleOCR
+# from paddleocr import PaddleOCR
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import threading
 
@@ -97,30 +97,30 @@ def captcha(driver, ocr, name):
     screenshot = './captcha/screenshot_' + name
     # driver.save_screenshot(screenshot)、
     screenshot_to_png(driver, screenshot)
-    img = Image.open(screenshot)
-    img = img.convert("RGB")
-    # cropped = img.crop((1190, 1010, 1400, 1080)) ## mac的参数
-    # cropped = img.crop((899, 503, 1004, 543)) ## 1633 * 6xx
-    cropped = img.crop((580, 502, 683, 544)) ## 800 * 600
-    cropped.save('./captcha/captcha_' + name)
-    time.sleep(1)
+    # img = Image.open(screenshot)
+    # img = img.convert("RGB")
+    # # cropped = img.crop((1190, 1010, 1400, 1080)) ## mac的参数
+    # # cropped = img.crop((899, 503, 1004, 543)) ## 1633 * 6xx
+    # cropped = img.crop((580, 502, 683, 544)) ## 800 * 600
+    # cropped.save('./captcha/captcha_' + name)
+    # time.sleep(1)
 
-    # 进行ocr
-    res = 'null'
-    result = ocr.ocr('./captcha/captcha_' + name, cls=True)
-    for line in result:
-        res = line[1][0].lower()
-        print(f'验证码可能是 {res}')
+    # # 进行ocr
+    # res = 'null'
+    # result = ocr.ocr('./captcha/captcha_' + name, cls=True)
+    # for line in result:
+    #     res = line[1][0].lower()
+    #     print(f'验证码可能是 {res}')
     
-    if res == '':
-        res = 'null'
+    # if res == '':
+    #     res = 'null'
     
-    # 输入captcha
-    print(f'尝试输入验证码{res}')
-    driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[3]/span/input').send_keys(res)
-    time.sleep(1)
-    driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input').click()
-    time.sleep(5)
+    # # 输入captcha
+    # print(f'尝试输入验证码{res}')
+    # driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[3]/span/input').send_keys(res)
+    # time.sleep(1)
+    # driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input').click()
+    # time.sleep(5)
 
 def sendMsg(m, error=''):
     if SERVER == 'on':
@@ -206,20 +206,20 @@ def getcookies():
         #     captcha(driver, ocr, name)
 
     ## 重新get
-    driver.get(loginUrl)
-    indexCookieList = driver.get_cookies()
+    # driver.get(loginUrl)
+    # indexCookieList = driver.get_cookies()
 
-    for cookie in indexCookieList:
-        if cookie['name'] == 'jia_web_sid':
-            cookies_sid = cookie['value']
-        if cookie['name'] == 'Q':
-            cookies_Q = cookie['value']
-        if cookie['name'] == 'T':
-            cookies_T= cookie['value']
+    # for cookie in indexCookieList:
+    #     if cookie['name'] == 'jia_web_sid':
+    #         cookies_sid = cookie['value']
+    #     if cookie['name'] == 'Q':
+    #         cookies_Q = cookie['value']
+    #     if cookie['name'] == 'T':
+    #         cookies_T= cookie['value']
     
-    print(f'cookies_Q = {cookies_Q}')
-    print(f'cookies_T = {cookies_T}')
-    print(f'cookies_sid = {cookies_sid}')
+    # print(f'cookies_Q = {cookies_Q}')
+    # print(f'cookies_T = {cookies_T}')
+    # print(f'cookies_sid = {cookies_sid}')
     # return cookies_Q, cookies_T, cookies_sid
    
 
