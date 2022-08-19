@@ -32,7 +32,7 @@ def screenshot_to_png(driver, filename):
              解决了懒加载问题
              保存俩种图片格式
     '''
-    path = './png'
+    # path = './png'
     try:
         driver.implicitly_wait(20)
  
@@ -62,10 +62,10 @@ def screenshot_to_png(driver, filename):
         # 将浏览器的宽高设置成刚刚获取的宽高
         driver.set_window_size(width + 100, height + 100)
         time.sleep(1)
-        png_path = path + '/{}.png'.format(filename)
+        # png_path = path + '/{}.png'.format(filename)
  
         # 截图并关掉浏览器
-        driver.save_screenshot(png_path)
+        driver.save_screenshot(filename)
         # driver.close()
  
     except Exception as e:
