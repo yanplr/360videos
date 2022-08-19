@@ -12,6 +12,7 @@ import json
 import os
 from PIL import Image
 from paddleocr import PaddleOCR
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 ## 变量
 CHROMEDRIVER_PATH = '/usr/local/bin/chromedriver'
@@ -103,7 +104,7 @@ def getcookies():
             print(f'用户名：{user_name.text}')
             print(f'登录成功')
             flag = False
-        except:
+        except NoSuchElementException:
             tryTime += 1
             print(f'尝试输入验证码：第{str(tryTime)}次')
             name = str(tryTime) + '.png'
