@@ -24,6 +24,54 @@ SCKEY = os.environ['SCKEY']
 dkStart = datetime.datetime.now()
 
 
+## 用driver.screen_shot截图位置会有略微区别
+def screenshot_to_png(driver, filename):
+    ''' 参数：网址
+        功能: 保存网址截图
+             解决了截图不全问题
+             解决了懒加载问题
+             保存俩种图片格式
+    '''
+    path = './png'
+    try:
+        driver.implicitly_wait(20)
+ 
+        # 模拟人滚动滚动条,处理图片懒加载问题
+        js_height = "return document.body.clientHeight"
+        k = 1
+        height = driver.execute_script(js_height)
+        while True:
+            if k * 500 < height:
+                js_move = "window.scrollTo(0,{})".format(k * 500)
+                print(js_move)
+                driver.execute_script(js_move)
+                time.sleep(0.2)
+                height = driver.execute_script(js_height)
+                k += 1
+            else:
+                break
+ 
+        time.sleep(1)
+ 
+        # 7>  # 直接截图截不全，调取最大网页截图
+        width = driver.execute_script(
+            "return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);")
+        height = driver.execute_script(
+            "return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);")
+        print(width, height)
+        # 将浏览器的宽高设置成刚刚获取的宽高
+        driver.set_window_size(width + 100, height + 100)
+        time.sleep(1)
+        png_path = path + '/{}.png'.format(filename)
+ 
+        # 截图并关掉浏览器
+        driver.save_screenshot(png_path)
+        # driver.close()
+ 
+    except Exception as e:
+        print(e)
+
+
 def shot(driver, img_dir):
     i = 0
     while True:
@@ -47,7 +95,8 @@ def getGif(img_dir):
 
 def captcha(driver, ocr, name):
     screenshot = './captcha/screenshot_' + name
-    driver.save_screenshot(screenshot)
+    # driver.save_screenshot(screenshot)、
+    screenshot_to_png(driver, screenshot)
     img = Image.open(screenshot)
     img = img.convert("RGB")
     # cropped = img.crop((1190, 1010, 1400, 1080)) ## mac的参数
