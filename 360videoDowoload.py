@@ -182,12 +182,13 @@ def getcookies():
     ocr = PaddleOCR(use_angle_cls=True, lang="en") 
     # ocr = ''
     while(flag and tryTime < 10):
-        if driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input'):
+        try:
+            driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[1]/div/div[2]/form/p[5]/input')
             tryTime += 1
             print(f'尝试输入验证码：第{str(tryTime)}次')
             name = str(tryTime) + '.png'
             captcha(driver, ocr, name)
-        else:
+        except:
             user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
             print(f'用户名：{user_name.text}')
             print(f'登录成功')
@@ -206,6 +207,7 @@ def getcookies():
 
     ## 重新get
     driver.get(loginUrl)
+    indexCookieList = driver.get_cookies()
 
     for cookie in indexCookieList:
         if cookie['name'] == 'jia_web_sid':
