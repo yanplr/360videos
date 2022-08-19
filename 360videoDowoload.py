@@ -105,24 +105,24 @@ def getcookies():
             name = str(tryTime) + '.png'
             captcha(driver, ocr, name)
 
-    # ## 重新get
-    # driver.get(loginUrl)
-    # indexCookieList = driver.get_cookies()
-    # print(type(indexCookieList[0]))
-    # print(indexCookieList)
+    ## 重新get
+    driver.get(loginUrl)
+    indexCookieList = driver.get_cookies()
+    print(type(indexCookieList[0]))
+    print(indexCookieList)
 
-    # for cookie in indexCookieList:
-    #     if cookie['name'] == 'jia_web_sid':
-    #         cookies_sid = cookie['value']
-    #     if cookie['name'] == 'Q':
-    #         cookies_Q = cookie['value']
-    #     if cookie['name'] == 'T':
-    #         cookies_T= cookie['value']
+    for cookie in indexCookieList:
+        if cookie['name'] == 'jia_web_sid':
+            cookies_sid = cookie['value']
+        if cookie['name'] == 'Q':
+            cookies_Q = cookie['value']
+        if cookie['name'] == 'T':
+            cookies_T= cookie['value']
     
-    # print(f'cookies_Q = {cookies_Q}')
-    # print(f'cookies_T = {cookies_T}')
-    # print(f'cookies_sid = {cookies_sid}')
-    # return cookies_Q, cookies_T, cookies_sid
+    print(f'cookies_Q = {cookies_Q}')
+    print(f'cookies_T = {cookies_T}')
+    print(f'cookies_sid = {cookies_sid}')
+    return cookies_Q, cookies_T, cookies_sid
    
 
 def getVideoDict(cookies_Q, cookies_T, cookies_sid):
@@ -221,8 +221,8 @@ def downloadVideos(videoDict, saveDir, cookies_Q, cookies_T, cookies_sid):
 
 if __name__ == '__main__':
     ## 获取cookies
-    # cookies_Q, cookies_T, cookies_sid = getcookies()
-    getcookies()
+    cookies_Q, cookies_T, cookies_sid = getcookies()
+    # getcookies()
     
     ## 下载视频
-    # getVideoDict(cookies_Q, cookies_T, cookies_sid)
+    getVideoDict(cookies_Q, cookies_T, cookies_sid)
