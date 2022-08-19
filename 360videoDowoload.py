@@ -28,7 +28,9 @@ def captcha(driver, ocr):
     driver.save_screenshot(screenshot)
     img = Image.open(screenshot)
     img = img.convert("RGB")
-    cropped = img.crop((1190, 1010, 1400, 1080))
+    # cropped = img.crop((1190, 1010, 1400, 1080)) ## mac的参数
+    cropped = img.crop((899, 503, 1004, 543))
+
     cropped.save('./captcha.png')
     time.sleep(1)
 
