@@ -52,11 +52,11 @@ def captcha(driver, ocr, name):
     save_fullscreenshot(driver,screenshot)
     img = Image.open(screenshot)
     img = img.convert("RGB")
-    # # cropped = img.crop((1190, 1010, 1400, 1080)) ## mac的参数
-    # # cropped = img.crop((899, 503, 1004, 543)) ## 1633 * 6xx
-    # cropped = img.crop((580, 502, 683, 544)) ## 800 * 600
-    # cropped.save('./captcha/captcha_' + name)
-    # time.sleep(1)
+    cropped = img.crop((900-1, 500+2, 1000+1, 550-6)) ## full_screen
+
+
+    cropped.save('./captcha/captcha_' + name)
+    time.sleep(1)
 
     # # 进行ocr
     # res = 'null'
