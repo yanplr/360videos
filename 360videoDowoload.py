@@ -60,13 +60,13 @@ def captcha(driver, ocr, name):
 
     # 进行ocr
     res = 'null'
-    result = ocr.ocr('./captcha/captcha_' + name, cls=True)
-    for line in result:
-        res = line[1][0].lower()
-        print(f'验证码可能是 {res}')
+    # result = ocr.ocr('./captcha/captcha_' + name, cls=True)
+    # for line in result:
+    #     res = line[1][0].lower()
+    #     print(f'验证码可能是 {res}')
     
-    if res == '':
-        res = 'null'
+    # if res == '':
+    #     res = 'null'
     
     # 输入captcha
     print(f'尝试输入验证码{res}')
