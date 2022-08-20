@@ -54,6 +54,7 @@ jobs:
           PHONE: ${{ secrets.PHONE }}
           PW: ${{ secrets.PW }}
           SCKEY: ${{ secrets.SCKEY }}
+          DD_TOKEN: ${{ secrets.DD_TOEKN }}
 
       - name: Install rclone
         run: curl https://rclone.org/install.sh | sudo bash
