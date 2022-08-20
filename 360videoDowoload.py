@@ -17,7 +17,7 @@ SERVER = 'on'
 PHONE = os.environ['PHONE']
 PW = os.environ['PW']
 SCKEY = os.environ['SCKEY']
-DD_TOKEN = os.environ['DD_TOKEN1']
+DD_TOKEN = os.environ['DD_TOKEN']
 dkStart = datetime.datetime.now()
 
 def save_fullscreenshot(driver,screen_shot_name):
