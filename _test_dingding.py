@@ -1,6 +1,7 @@
 import os, time, datetime, json, requests
 
 DD_TOKEN = os.environ['DD_TOKEN']
+DD_URL = os.environ['DD_URL']
 
 SERVER = 'on'
 dkStart = datetime.datetime.now()
@@ -10,7 +11,9 @@ def sendMsg(m, error=''):
     if SERVER == 'on':
         timeNow = time.strftime('%Y-%m-%d', time.localtime())
         duration = datetime.datetime.now() - dkStart
-        dingDingUrl = 'https://oapi.dingtalk.com/robot/send?access_token=' + DD_TOKEN
+        # dingDingUrl = 'https://oapi.dingtalk.com/robot/send?access_token=' + DD_TOKEN
+        dingDingUrl = DD_URL
+        
         print(dingDingUrl)
         if error == '':
             msg = 'yanplr:{} {}! 耗时{}秒。'.format(timeNow, m, duration.seconds)
