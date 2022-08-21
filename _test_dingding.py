@@ -1,6 +1,7 @@
 import os, time, datetime, json, requests
 
-DD_TOKEN = os.environ['DD_TOKEN']
+# DD_TOKEN = os.environ['DD_TOKEN']
+DD_TOKEN = '11111'
 
 SERVER = 'on'
 dkStart = datetime.datetime.now()
