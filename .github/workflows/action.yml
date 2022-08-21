@@ -25,44 +25,45 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Install paddleocr
-        run: |
-          python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
-          pip install "paddleocr>=2.0.1"
+      # - name: Install paddleocr
+      #   run: |
+      #     python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+      #     pip install "paddleocr>=2.0.1"
       
       - name: Install requirements
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
-      - name: Unzip config
-        run: |
-          mkdir -p ~/.config/rclone/
-          unzip -P ${{ secrets.PASSWD }} rclone.zip -d ~/.config/rclone
+      # - name: Unzip config
+      #   run: |
+      #     mkdir -p ~/.config/rclone/
+      #     unzip -P ${{ secrets.PASSWD }} rclone.zip -d ~/.config/rclone
       
-      - name: Change localtime
-        run: |
-          # 更改时区
-          sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+      # - name: Change localtime
+      #   run: |
+      #     # 更改时区
+      #     sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
       
       - name: Download videos
-        run: |
-          sudo cp -p ./chromedriver /usr/local/bin
-          sudo chmod 777 /usr/local/bin/chromedriver
-          python ./360videoDowoload.py
+        run:
+          # sudo cp -p ./chromedriver /usr/local/bin
+          # sudo chmod 777 /usr/local/bin/chromedriver
+          # python ./360videoDowoload.py
+          python _test_dingding.py
         env:
-          PHONE: ${{ secrets.PHONE }}
-          PW: ${{ secrets.PW }}
-          SCKEY: ${{ secrets.SCKEY }}
+          # PHONE: ${{ secrets.PHONE }}
+          # PW: ${{ secrets.PW }}
+          # SCKEY: ${{ secrets.SCKEY }}
           DD_TOKEN: ${{ secrets.DD_TOEKN }}
 
-      - name: Install rclone
-        run: curl https://rclone.org/install.sh | sudo bash
+      # - name: Install rclone
+      #   run: curl https://rclone.org/install.sh | sudo bash
 
 
-      - name: Sync rclone
-        run: |
-          ls -a
-          # 列出文件(此处不展示)
-          # rclone mkdir onedrive:/360videos
-          rclone copy ./ onedrive:/360videos
+      # - name: Sync rclone
+      #   run: |
+      #     ls -a
+      #     # 列出文件(此处不展示)
+      #     # rclone mkdir onedrive:/360videos
+      #     rclone copy ./ onedrive:/360videos
