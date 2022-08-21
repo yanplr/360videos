@@ -11,6 +11,7 @@ def sendMsg(m, error=''):
         timeNow = time.strftime('%Y-%m-%d', time.localtime())
         duration = datetime.datetime.now() - dkStart
         dingDingUrl = 'https://oapi.dingtalk.com/robot/send?access_token=' + DD_TOKEN
+        print(dingDingUrl)
         if error == '':
             msg = 'yanplr:{} {}! 耗时{}秒。'.format(timeNow, m, duration.seconds)
             data_info = {
