@@ -20,6 +20,9 @@ SCKEY = os.environ['SCKEY']
 DD_URL = os.environ['DD_URL']
 dkStart = datetime.datetime.now()
 
+##
+cookies_Q, cookies_T, cookies_sid = '', '', ''
+
 def save_fullscreenshot(driver,screen_shot_name):
     # We need the dimensions of the content
     page_rect = driver.execute_cdp_cmd('Page.getLayoutMetrics', {})
@@ -172,6 +175,10 @@ def getcookies():
     driver.get(loginUrl)
     indexCookieList = driver.get_cookies()
 
+    global cookies_Q
+    global cookies_T
+    global cookies_sid
+
     for cookie in indexCookieList:
         if cookie['name'] == 'jia_web_sid':
             cookies_sid = cookie['value']
@@ -281,9 +288,13 @@ def downloadVideos(videoDict, saveDir, cookies_Q, cookies_T, cookies_sid):
             pass
 
 if __name__ == '__main__':
-    ## 获取cookies
-    cookies_Q, cookies_T, cookies_sid = getcookies()
-    # getcookies()
+    try:
+        ## 获取cookies
     
-    ## 下载视频
-    getVideoDict(cookies_Q, cookies_T, cookies_sid)
+        cookies_Q, cookies_T, cookies_sid = getcookies()
+        # getcookies()
+        
+        ## 下载视频
+        getVideoDict(cookies_Q, cookies_T, cookies_sid)
+    except:
+        sendMsg("出错")
