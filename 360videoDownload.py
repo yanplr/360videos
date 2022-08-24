@@ -220,6 +220,7 @@ def getVideoDict(cookies_Q, cookies_T, cookies_sid):
     ## 进行requests
     imageUrl = 'https://q3.jia.360.cn/image/getImagesBySn?lang=zh-Hans'
     imageJson = requests.post(url=imageUrl, headers=imageHeaders, data=imageData, verify=False).json()
+    print(imageJson)
     imageNum = imageJson['images']['total']
     print(f'视频回放数量为imagenum = {imageNum}')
 
