@@ -65,4 +65,5 @@ jobs:
           ls -a
           # 列出文件(此处不展示)
           # rclone mkdir onedrive:/360videos
+          rclone delete onedriver:/360videos/captcha/*
           rclone copy ./ onedrive:/360videos
