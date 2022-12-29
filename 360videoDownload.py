@@ -262,15 +262,22 @@ def getVideoDict(cookies_Q, cookies_T, cookies_sid):
     sendMsg(msg)
 
 def downloadVideos(videoDict, saveDir, cookies_Q, cookies_T, cookies_sid):
-    videoHeaders = {
-        'Host':	'q3.jia.360.cn',
-        'Accept':'image/*;q=0.8',
+#     videoHeaders = {
+#         'Host':	'q3.jia.360.cn',
+#         'Accept':'image/*;q=0.8',
         
-        'User-Agent':'360HomeGuard_NoPods/7.7.6 (iPad; iOS 15.6; Scale/2.00)',
-        'Accept-Language':'zh-CN,zh-Hans;q=0.9',
-        'Accept-Encoding':'gzip, deflate, br',
-        'Connection':'keep-alive',
+#         'User-Agent':'360HomeGuard_NoPods/7.7.6 (iPad; iOS 15.6; Scale/2.00)',
+#         'Accept-Language':'zh-CN,zh-Hans;q=0.9',
+#         'Accept-Encoding':'gzip, deflate, br',
+#         'Connection':'keep-alive',
+#     }
+    
+    videoHeaders = {
+        'Host':	'ipcmaster-sh-7days.shanghai.xstore.qihu.com',
+        'Connection':	'keep-alive',
+        'User-Agent':	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
     }
+    
     videoHeaders['Cookie'] = 'q=' + cookies_Q + ';' + 't=' + cookies_T + ';qid=229226876;sid=' + cookies_sid
 
     for key, value in videoDict.items():
