@@ -132,9 +132,11 @@ def getcookies():
     s = Service(CHROMEDRIVER_PATH)
     driver = webdriver.Chrome(service=s, options=options, desired_capabilities=d)
     driver.delete_all_cookies()
+    print('prepare to login')
 
     loginUrl = 'https://my.jia.360.cn/web/index'
     driver.get(loginUrl)
+    print('get login url')
 
     ## 登录页面
     print(f'正在登录……')
