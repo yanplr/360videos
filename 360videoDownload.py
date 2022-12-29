@@ -13,7 +13,7 @@ import base64
 
 ## 变量
 # CHROMEDRIVER_PATH = '/usr/local/bin/chromedriver'
-CHROMEDRIVER_PATH = '/usr/local/Caskroom/chromedriver/108.0.5359.71'
+CHROMEDRIVER_PATH = '/usr/local/Caskroom/chromedriver/108.0.5359.71/chromedriver'
 SERVER = 'on'
 PHONE = os.environ['PHONE']
 PW = os.environ['PW']
