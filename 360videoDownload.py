@@ -8,7 +8,7 @@ import requests
 import json
 import os
 from PIL import Image
-from paddleocr import PaddleOCR
+# from paddleocr import PaddleOCR
 import base64
 
 ## 变量
