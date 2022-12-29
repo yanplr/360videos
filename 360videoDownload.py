@@ -8,7 +8,7 @@ import requests
 import json
 import os
 from PIL import Image
-# from paddleocr import PaddleOCR
+from paddleocr import PaddleOCR
 import base64
 
 ## 变量
@@ -120,19 +120,19 @@ def getcookies():
 
     ### /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir='/Users/yanplr/Library/Application\ Support/Google/Chrome'
     print('prepare for webdriver')
-#     options = webdriver.ChromeOptions()
-#     options.add_argument('--headless')
-#     options.add_argument('--disable-gpu')
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
 #     options.add_experimental_option("detach", True)
-    # options.set_capability("detach", True)
-    ## 部署到github action时删除debugger_address
+#     options.set_capability("detach", True)
+    # 部署到github action时删除debugger_address
 #     options.debugger_address = '127.0.0.1:9222'
-#     d = DesiredCapabilities.CHROME
-#     d['goog:loggingPrefs'] = {'performance':'ALL'}
-#     s = Service(CHROMEDRIVER_PATH)
-#     driver = webdriver.Chrome(service=s, options=options, desired_capabilities=d)
-#     driver.delete_all_cookies()
-    driver = webdriver.Chrome()
+    d = DesiredCapabilities.CHROME
+    d['goog:loggingPrefs'] = {'performance':'ALL'}
+    s = Service(CHROMEDRIVER_PATH)
+    driver = webdriver.Chrome(service=s, options=options, desired_capabilities=d)
+    driver.delete_all_cookies()
+#     driver = webdriver.Chrome()
     print('prepare to login')
 
     loginUrl = 'https://my.jia.360.cn/web/index'
