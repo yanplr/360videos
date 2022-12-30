@@ -304,15 +304,18 @@ def downloadVideos(videoDict, saveDir, cookies_Q, cookies_T, cookies_sid):
             pass
 
 if __name__ == '__main__':
-    try:
-        ## 获取cookies
-        print('获取cookies')
-        cookies_Q, cookies_T, cookies_sid = getcookies()
-        # getcookies()
+#     try:
+#         ## 获取cookies
+#         print('获取cookies')
+#         cookies_Q, cookies_T, cookies_sid = getcookies()
+#         # getcookies()
         
-        ## 下载视频
-        print('下载视频')
-        getVideoDict(cookies_Q, cookies_T, cookies_sid)
-    except:
-        sendMsg("吃错")
+#         ## 下载视频
+#         print('下载视频')
+#         getVideoDict(cookies_Q, cookies_T, cookies_sid)
+#     except:
+#         sendMsg("吃错")
+        
+    cookies_Q, cookies_T, cookies_sid = getcookies()
+    getVideoDict(cookies_Q, cookies_T, cookies_sid)
 
