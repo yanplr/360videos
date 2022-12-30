@@ -163,7 +163,7 @@ def getcookies():
             name = str(tryTime) + '.png'
             captcha(driver, ocr, name)
         except:
-#             user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
+            user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
             print(f'用户名：{user_name.text}')
             print(f'登录成功')
             flag = False
