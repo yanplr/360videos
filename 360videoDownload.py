@@ -48,6 +48,7 @@ def save_fullscreenshot(driver,screen_shot_name):
 def captcha(driver, ocr, name):
     screenshot = './captcha/screenshot_' + name
     save_fullscreenshot(driver,screenshot)
+    save_fullscreenshot(driver,'./captcha/fullscreen.png')
     img = Image.open(screenshot)
     img = img.convert("RGB")
     cropped = img.crop((900-1, 500+2, 1000+1, 550-6)) ## full_screen
@@ -56,6 +57,7 @@ def captcha(driver, ocr, name):
     # 进行ocr
     res = 'null'
     result = ocr.ocr('./captcha/captcha_' + name, cls=True)
+    print(f'show result: {result}')
     for line in result:
         res = line[1][0].lower()
         print(f'验证码可能是 {res}')
