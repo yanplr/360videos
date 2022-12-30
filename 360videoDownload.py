@@ -163,7 +163,7 @@ def getcookies():
             name = str(tryTime) + '.png'
             captcha(driver, ocr, name)
         except:
-            user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
+#             user_name = driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div[3]/a[1]')
             print(f'用户名：{user_name.text}')
             print(f'登录成功')
             flag = False
@@ -304,18 +304,18 @@ def downloadVideos(videoDict, saveDir, cookies_Q, cookies_T, cookies_sid):
             pass
 
 if __name__ == '__main__':
-#     try:
-#         ## 获取cookies
-#         print('获取cookies')
-#         cookies_Q, cookies_T, cookies_sid = getcookies()
-#         # getcookies()
+    try:
+        ## 获取cookies
+        print('获取cookies')
+        cookies_Q, cookies_T, cookies_sid = getcookies()
+        # getcookies()
         
-#         ## 下载视频
-#         print('下载视频')
-#         getVideoDict(cookies_Q, cookies_T, cookies_sid)
-#     except:
-#         sendMsg("吃错")
+        ## 下载视频
+        print('下载视频')
+        getVideoDict(cookies_Q, cookies_T, cookies_sid)
+    except:
+        sendMsg("吃错")
         
-    cookies_Q, cookies_T, cookies_sid = getcookies()
-    getVideoDict(cookies_Q, cookies_T, cookies_sid)
+#     cookies_Q, cookies_T, cookies_sid = getcookies()
+#     getVideoDict(cookies_Q, cookies_T, cookies_sid)
 
