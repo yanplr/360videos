@@ -1,3 +1,4 @@
 selenium
 requests
 pillow
+numpy==1.14.1
