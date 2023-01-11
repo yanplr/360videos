@@ -59,7 +59,7 @@ def captcha(driver, ocr, name):
     result = ocr.ocr('./captcha/captcha_' + name, cls=True)
     print(f'show result: {result}')
     for line in result:
-        res = line[0][1][0].lower()
+        res = line[1][0].lower()
         print(f'验证码可能是 {res}')
     if res == '':
         res = 'null'
