@@ -96,8 +96,8 @@ def sendMsg(m, error=''):
                 },
                 "isAtAll": False
             }
-        url = 'https://sctapi.ftqq.com/{}.send?title={}&desp={}'.format(SCKEY, msg, '{}\n{}'.format(msg, error))
-        requests.get(url)
+        # url = 'https://sctapi.ftqq.com/{}.send?title={}&desp={}'.format(SCKEY, msg, '{}\n{}'.format(msg, error))
+        # requests.get(url)
 
         ## 钉钉发送的信息
         HEADERS = {"Content-Type": "application/json;charset=utf-8"}
@@ -303,9 +303,11 @@ if __name__ == '__main__':
 #         ## 下载视频
 #         print('下载视频')
 #         getVideoDict(cookies_Q, cookies_T, cookies_sid)
-#     except:
+#     except Exception as e:
+           
 #         sendMsg("吃错")
-        
-    cookies_Q, cookies_T, cookies_sid = getcookies()
-    getVideoDict(cookies_Q, cookies_T, cookies_sid)
-
+    try:
+        cookies_Q, cookies_T, cookies_sid = getcookies()
+        getVideoDict(cookies_Q, cookies_T, cookies_sid)
+    except Exception as e:
+        sendMsg(e)
