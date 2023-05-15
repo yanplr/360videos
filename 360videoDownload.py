@@ -310,4 +310,5 @@ if __name__ == '__main__':
         cookies_Q, cookies_T, cookies_sid = getcookies()
         getVideoDict(cookies_Q, cookies_T, cookies_sid)
     except Exception as e:
+        print(e)
         sendMsg(e)
