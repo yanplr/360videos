@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+# from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.service import Service
 import time
 import datetime
@@ -130,10 +130,12 @@ def getcookies():
 #     options.set_capability("detach", True)
     # 部署到github action时删除debugger_address
 #     options.debugger_address = '127.0.0.1:9222'
-    d = DesiredCapabilities.CHROME
-    d['goog:loggingPrefs'] = {'performance':'ALL'}
+#     d = DesiredCapabilities.CHROME
+#     d['goog:loggingPrefs'] = {'performance':'ALL'}
     s = Service(CHROMEDRIVER_PATH)
-    driver = webdriver.Chrome(service=s, options=options, desired_capabilities=d)
+#     driver = webdriver.Chrome(service=s, options=options, desired_capabilities=d)
+    driver = webdriver.Chrome(service=s, options=options)
+    
     driver.delete_all_cookies()
 #     driver = webdriver.Chrome()
     print('prepare to login')
