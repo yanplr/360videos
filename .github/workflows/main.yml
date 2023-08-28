@@ -12,7 +12,8 @@ on:
 
 jobs:
   run-it:
-    runs-on: macos-latest
+    # runs-on: macos-latest
+    runs-on: ubuntu-latest
     
     name: 360videos
     
